@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Yvanelle</title>
+  <style>
+    :root {
+      --bg1:#fff7fb; --bg2:#ffe5ef; --bg3:#eee3ff; --card:rgba(255,255,255,.86);
+      --text:#321123; --muted:#7b4963; --accent:#ff5b9c; --accent-2:#8e5cff;
+      --shadow:0 28px 80px rgba(117,38,82,.21); --radius:30px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);overflow-x:hidden;background:radial-gradient(circle at 15% 12%,rgba(255,255,255,.92),transparent 28%),radial-gradient(circle at 88% 18%,rgba(255,180,216,.68),transparent 30%),radial-gradient(circle at 50% 92%,rgba(186,154,255,.45),transparent 32%),linear-gradient(135deg,var(--bg1),var(--bg2) 48%,var(--bg3))}
+    body:before,body:after{content:"";position:fixed;width:340px;height:340px;border-radius:50%;filter:blur(12px);opacity:.24;pointer-events:none;z-index:0}
+    body:before{background:#ff5b9c;top:-130px;left:-100px;animation:float 10s ease-in-out infinite}
+    body:after{background:#8e5cff;right:-130px;bottom:-130px;animation:float 12s ease-in-out infinite reverse}
+    @keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(24px,-20px) scale(1.08)}}
+    .floating-things{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+    .floaty{position:absolute;bottom:-40px;font-size:clamp(18px,4vw,34px);opacity:.5;animation:rise linear infinite}
+    @keyframes rise{from{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.54}to{transform:translateY(-115vh) rotate(360deg);opacity:0}}
+    main{position:relative;z-index:2;min-height:100vh;display:grid;place-items:center;padding:22px}
+    .card{width:min(860px,100%);min-height:min(760px,calc(100vh - 44px));display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:clamp(24px,6vw,58px);border:1px solid rgba(255,255,255,.78);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow);backdrop-filter:blur(18px);position:relative;overflow:hidden}
+    .card.active{display:flex;animation:fadeIn .45s ease both}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .card:before{content:"";position:absolute;inset:16px;border-radius:calc(var(--radius) - 12px);border:1px dashed rgba(255,91,156,.25);pointer-events:none}
+    .eyebrow{margin:0 0 12px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;font-size:.78rem;font-weight:850}
+    h1,h2{margin:0;line-height:.98;letter-spacing:-.055em}
+    h1{font-size:clamp(2.45rem,8vw,5.5rem)}
+    h2{font-size:clamp(2rem,6.4vw,4.4rem)}
+    p{margin:16px auto 0;max-width:670px;color:var(--muted);font-size:clamp(1rem,2.4vw,1.22rem);line-height:1.7}
+    .sparkle{display:inline-block;animation:wiggle 1.6s ease-in-out infinite}
+    @keyframes wiggle{0%,100%{transform:rotate(-4deg) scale(1)}50%{transform:rotate(6deg) scale(1.12)}}
+    .button-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:34px;width:100%}
+    button{border:0;border-radius:999px;padding:15px 24px;font-size:1rem;font-weight:850;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,background .18s ease;box-shadow:0 12px 26px rgba(155,39,97,.16);font-family:inherit}
+    button:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(155,39,97,.22)}
+    .primary{color:white;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+    .secondary{color:var(--text);background:rgba(255,255,255,.8);border:1px solid rgba(255,91,156,.25)}
+    .tiny-note,.no-message{margin-top:16px;min-height:28px;color:var(--muted);font-size:.95rem;font-weight:700}
+    .photo-wrap{width:min(340px,76vw);aspect-ratio:1/1.12;margin:24px auto 4px;border-radius:34px;padding:12px;background:linear-gradient(135deg,rgba(255,91,156,.34),rgba(142,92,255,.28)),rgba(255,255,255,.52);box-shadow:0 20px 44px rgba(117,38,82,.18);position:relative}
+    .photo-wrap:after{content:"♡";position:absolute;right:-10px;top:-18px;width:54px;height:54px;display:grid;place-items:center;border-radius:50%;color:white;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 12px 24px rgba(117,38,82,.2);font-size:30px;font-weight:900}
+    .photo{width:100%;height:100%;object-fit:cover;border-radius:24px;display:block;background:rgba(255,255,255,.7)}
+    .photo-placeholder{display:none;width:100%;height:100%;border-radius:24px;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--muted);background:rgba(255,255,255,.66);border:1px dashed rgba(255,91,156,.35);font-weight:850;line-height:1.5}
+    .message-grid{width:min(730px,100%);display:grid;gap:14px;margin-top:26px;text-align:left}
+    .message-card{padding:18px;border-radius:22px;background:rgba(255,255,255,.68);border:1px solid rgba(255,91,156,.16);box-shadow:0 10px 22px rgba(117,38,82,.07)}
+    .message-card strong{display:block;color:var(--text);font-size:1.03rem;margin-bottom:6px}
+    .message-card span{color:var(--muted);line-height:1.62;font-size:1rem}
+    .list-card,.letter{width:min(740px,100%);margin-top:24px;text-align:left;padding:22px;border-radius:26px;background:linear-gradient(135deg,rgba(255,91,156,.1),rgba(142,92,255,.1));border:1px solid rgba(255,91,156,.18)}
+    .list-card ul{margin:12px 0 0;padding-left:20px;color:var(--muted);line-height:1.72;font-size:1rem}
+    .letter p{margin:0 0 14px;color:var(--muted);font-size:1rem;line-height:1.72}.letter p:last-child{margin-bottom:0}
+    .proposal-box{margin-top:26px;padding:clamp(22px,5vw,34px);width:min(720px,100%);border-radius:30px;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.7),transparent 30%),linear-gradient(135deg,rgba(255,91,156,.16),rgba(142,92,255,.16));border:1px solid rgba(255,91,156,.2)}
+    .proposal-question{margin:0;color:var(--text);font-size:clamp(1.65rem,5vw,3.25rem);line-height:1.08;letter-spacing:-.04em;font-weight:900}
+    .yes-result{display:none;margin-top:24px;padding:18px;border-radius:22px;color:var(--text);background:rgba(255,255,255,.68);border:1px solid rgba(255,91,156,.18);font-weight:850;line-height:1.6}
+    .progress{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
+    .dot{width:9px;height:9px;border-radius:999px;background:rgba(124,73,99,.25)}.dot.active{width:26px;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+    .confetti{position:fixed;left:50%;top:50%;z-index:10;pointer-events:none;font-size:24px;animation:pop 1.35s ease-out forwards}
+    @keyframes pop{from{transform:translate(-50%,-50%) scale(.6);opacity:1}to{transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) rotate(var(--r)) scale(1.25);opacity:0}}
+    @media(max-width:560px){main{padding:14px}.card{min-height:calc(100vh - 28px);padding:24px}button{width:100%}.photo-wrap{width:min(300px,80vw)}.progress{bottom:14px}}
+  </style>
+</head>
+<body>
+  <div class="floating-things" aria-hidden="true"></div>
+  <main>
+    <section class="card active" id="intro-card">
+      <p class="eyebrow">For Yvanelle</p>
+      <h1>Can I show you something?</h1>
+      <p>Today involved us speaking about things I observed.<br>But that conversation would not be complete if I did not also tell you the things I love and appreciate about you. <span class="sparkle">🌷</span></p>
+      <div class="button-row"><button class="primary" id="start-btn">Yes, show me</button><button class="secondary" id="soft-btn">Give me a second</button></div>
+      <div class="tiny-note" id="soft-note"></div>
+      <div class="progress" aria-hidden="true"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </section>
+
+    <section class="card" id="photo-card">
+      <p class="eyebrow">A little spotlight</p><h2>Yvanelle</h2>
+      <div class="photo-wrap"><img class="photo" id="yvanelle-photo" src="yvanelle.jpeg" alt="A photo of Yvanelle"><div class="photo-placeholder" id="photo-placeholder">Add her picture here by placing a file named yvanelle.jpeg beside this index.html file.</div></div>
+      <p>I want you to feel loved, seen, chosen, reassured, and maybe even a little surprised.</p>
+      <div class="button-row"><button class="primary" id="next-btn">Continue</button></div>
+      <div class="progress" aria-hidden="true"><span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </section>
+
+    <section class="card" id="honesty-card">
+      <p class="eyebrow">Honesty, but with care</p><h2>About today</h2>
+      <div class="letter">
+        <p>Today, I spoke about some things I observed: moments where I felt you could be stubborn, where accepting help felt difficult, where communication needed more attention, and where I wanted to feel more fully considered in your presence.</p>
+        <p>I am not saying this to reduce you to those moments. I am saying it because I want us to be honest enough to grow, not silent enough to build resentment.</p>
+        <p>But it would be unfair if I only spoke about what needs work and did not also say what I truly see in you.</p>
+      </div>
+      <div class="button-row"><button class="primary" id="honesty-next-btn">Show me the good things</button></div>
+      <div class="progress" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+    </section>
+
+    <section class="card" id="appreciation-card">
+      <p class="eyebrow">The things I appreciate</p><h2>I see your effort.</h2>
+      <div class="message-grid">
+        <div class="message-card"><strong>I appreciate the effort you make to open up.</strong><span>I know opening up is not always easy, and I notice the courage it takes when you let me in.</span></div>
+        <div class="message-card"><strong>I love your smile.</strong><span>Your smile has a way of softening moments and making things feel lighter.</span></div>
+        <div class="message-card"><strong>I admire your ambition.</strong><span>I like seeing that there is more inside you: more drive, more dreams, more of the woman you are becoming.</span></div>
+        <div class="message-card"><strong>I appreciate the time you spend with me.</strong><span>Whether it is calling, coming over, or just choosing to be present, I do not take that for granted.</span></div>
+      </div>
+      <div class="button-row"><button class="primary" id="effort-btn">And I see your efforts too</button></div>
+      <div class="progress" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span></div>
+    </section>
+
+    <section class="card" id="effort-card">
+      <p class="eyebrow">Your effort matters</p><h2>I heard you.</h2>
+      <p>When I asked you to show me the ways you have been trying, these are the things I heard from you — and I want you to know I am not ignoring them.</p>
+      <div class="list-card"><ul>
+        <li>You share with me, especially food.</li><li>You are affectionate with me: hugging me, kissing me, and saying “I love you.”</li><li>You open up before you even feel fully comfortable.</li><li>You commute for two hours to my apartment.</li><li>You call me and make space for everyday calls.</li><li>You send me corny reels and say corny things.</li><li>You opened yourself to dating someone for the first time and trying to make it work.</li><li>You let yourself love me without restricting yourself.</li><li>You show affection in public.</li><li>You inconvenience yourself to make me happy.</li><li>You try to be more understanding and less nonchalant.</li><li>You try not to hide your feelings.</li><li>You communicate so we can resolve misunderstandings instead of bottling things up.</li><li>You love me unconditionally.</li>
+      </ul></div>
+      <div class="button-row"><button class="primary" id="proposal-btn">One more thing</button></div>
+    </section>
+
+    <section class="card" id="proposal-card">
+      <p class="eyebrow">So, playfully serious...</p><h2>Here is my heart.</h2>
+      <div class="proposal-box">
+        <p class="proposal-question">Yvanelle, with honesty, care, and intention... will you be my girlfriend?</p>
+        <p>I choose you because, to me, I see more good reasons, more beautiful qualities, and more hope in us than reasons not to try.</p>
+      </div>
+      <div class="button-row"><button class="primary" id="yes-btn">Yes, I will 💕</button><button class="secondary" id="no-btn">I need to think</button></div>
+      <div class="no-message" id="no-message"></div>
+      <div class="yes-result" id="yes-result">Okay. Playing it cool. Playing it cool.<br>Not freaking out. Definitely not smiling at my phone already.<br>But seriously: thank you for choosing us. 💕</div>
+      <div class="button-row" id="replay-row" style="display:none;"><button class="secondary" id="replay-btn">Replay this little page ✨</button></div>
+    </section>
+  </main>
+
+  <script>
+    const cards={intro:document.getElementById("intro-card"),photo:document.getElementById("photo-card"),honesty:document.getElementById("honesty-card"),appreciation:document.getElementById("appreciation-card"),effort:document.getElementById("effort-card"),proposal:document.getElementById("proposal-card")};
+    const startBtn=document.getElementById("start-btn"),softBtn=document.getElementById("soft-btn"),nextBtn=document.getElementById("next-btn"),honestyNextBtn=document.getElementById("honesty-next-btn"),effortBtn=document.getElementById("effort-btn"),proposalBtn=document.getElementById("proposal-btn"),yesBtn=document.getElementById("yes-btn"),noBtn=document.getElementById("no-btn"),replayBtn=document.getElementById("replay-btn"),replayRow=document.getElementById("replay-row"),softNote=document.getElementById("soft-note"),noMessage=document.getElementById("no-message"),yesResult=document.getElementById("yes-result"),photo=document.getElementById("yvanelle-photo"),photoPlaceholder=document.getElementById("photo-placeholder");
+    const noResponses=["That is okay. This is a real question, so you can take real time.","No pressure. I would rather have your honest heart than a rushed answer.","Take your time. I am still glad I told you properly.","Mature answer accepted. But the page is secretly rooting for us.","Think about it. I will be here, trying to act normal."]; let noIndex=0;
+    function showCard(name){Object.values(cards).forEach(card=>card.classList.remove("active"));cards[name].classList.add("active");window.scrollTo({top:0,behavior:"smooth"})}
+    function randomBetween(min,max){return Math.random()*(max-min)+min}
+    function confettiBurst(){const pieces=["🌷","✨","🤍","💕","💫","🫶"];for(let i=0;i<70;i++){const span=document.createElement("span");span.className="confetti";span.textContent=pieces[Math.floor(Math.random()*pieces.length)];span.style.setProperty("--x",`${randomBetween(-46,46)}vw`);span.style.setProperty("--y",`${randomBetween(-46,46)}vh`);span.style.setProperty("--r",`${randomBetween(-220,220)}deg`);span.style.left=`${randomBetween(30,70)}%`;span.style.top=`${randomBetween(35,62)}%`;document.body.appendChild(span);setTimeout(()=>span.remove(),1500)}}
+    function buildFloatingThings(){const container=document.querySelector(".floating-things");const emojis=["♡","🌷","✨","🤍","💫"];for(let i=0;i<18;i++){const item=document.createElement("span");item.className="floaty";item.textContent=emojis[Math.floor(Math.random()*emojis.length)];item.style.left=`${randomBetween(0,100)}%`;item.style.animationDuration=`${randomBetween(10,20)}s`;item.style.animationDelay=`${randomBetween(0,10)}s`;container.appendChild(item)}}
+    photo.addEventListener("error",()=>{photo.style.display="none";photoPlaceholder.style.display="flex"});
+    startBtn.addEventListener("click",()=>{confettiBurst();showCard("photo")});
+    softBtn.addEventListener("click",()=>{softNote.textContent="Take your time. This page is soft, honest, and made with care."});
+    nextBtn.addEventListener("click",()=>showCard("honesty"));
+    honestyNextBtn.addEventListener("click",()=>showCard("appreciation"));
+    effortBtn.addEventListener("click",()=>showCard("effort"));
+    proposalBtn.addEventListener("click",()=>{confettiBurst();showCard("proposal")});
+    yesBtn.addEventListener("click",()=>{confettiBurst();yesResult.style.display="block";replayRow.style.display="flex";noMessage.textContent="";yesBtn.textContent="Officially smiling now 💕"});
+    noBtn.addEventListener("click",()=>{noMessage.textContent=noResponses[noIndex%noResponses.length];noIndex++});
+    replayBtn.addEventListener("click",()=>{yesResult.style.display="none";replayRow.style.display="none";yesBtn.textContent="Yes, I will 💕";noMessage.textContent="";showCard("intro")});
+    buildFloatingThings();
+  </script>
+</body>
+</html>
